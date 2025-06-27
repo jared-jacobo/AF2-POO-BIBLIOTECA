@@ -1,0 +1,143 @@
+
+"""
+Ejercicio para hacer una aplicación simple que hará la función
+de un gestor de biblioteca.
+
+"""
+#Definimos la clase principal para "libro"
+
+class Libro:
+    def __init__(self, nombre, autor, ISBN, fechapublicacion):
+        self.nombre = nombre
+        self.autor = autor
+        self.ISBN = ISBN
+        self.fechapublicacion = fechapublicacion
+        self.disponibilidad = True
+
+    #Disponibilidad se inicializará como True en todas las instancias
+
+    #Función que despliega la información del objeto
+    def verInformacion(self):
+        estado = "Disponible" if self.disponibilidad else "No disponible"
+        print(f"\n-------")
+        print(f"Título: {self.nombre}.")
+        print(f"Autor: {self.autor}.")
+        print(f"ISBN: {self.ISBN}.")
+        print(f"Año de Publicación: {self.fechapublicacion}.")
+        print(f"Estado: {estado}")
+
+    #Función que cambia el valor de disponibilidad a False
+    def prestarLibro(self):
+        if self.disponibilidad:
+            self.disponibilidad = False
+            print (f"{self.nombre} ha sido prestado exitosamente.")
+        else:
+            print(f"Lo siento {self.nombre} no esta disponible")
+
+    #Función que cambia el valor de disponibilidad a True
+    def devolverLibro(self):
+        if not self.disponibilidad:
+            self.disponibilidad = True
+            print (f"{self.nombre} ha sido devuelto exitosamente.")
+        else:
+            print(f"{self.nombre} se encuentra disponible.")
+
+#Creamos una lista que contenga todas las instancias de Libro
+catalogo_de_libros = []
+
+#Contaremos con un catálogo limitado al principio
+catalogo_de_libros.append(Libro("Brave New World", "Aldous Huxley", "978-0060850524", "1932"))
+catalogo_de_libros.append(Libro("El psicoanalista", "John Katzenbach", "978-8466665070", "2002"))
+catalogo_de_libros.append(Libro("Fahrenheit 451", "Ray Bradbury", "978-6073107372", "1953"))
+catalogo_de_libros.append(Libro("Dune", "Frank Herbert", "978-6073194648", "1965"))
+
+def inicio():
+    #Programa para iniciar el bucle del menú
+    print ("\nPresiona 1 para desplegar el menú")
+    print ("Presiona 2 para salir del programa\n")
+
+
+def menu():
+    #Menú de opciones
+    print ("\n¿Que deseas hacer?")
+    print ("1.- Revisar el catálogo de libros")
+    print ("2.- Solicitar prestado un libro")
+    print ("3.- Devolver un libro prestado")
+    print ("4.- Donar un libro")
+    print ("5.- Salir del menú principal\n")
+
+print ("---Bienvenido a la Biblioteca virtual de la UCNL---")
+while True:
+
+    inicio()
+    try:
+        iniciar = int(input())
+
+    except ValueError:
+        print("\nOpción no válida. Vuelve a intentarlo\n")
+        continue
+
+    if iniciar == 1:
+
+        menu()
+
+        try:
+            respuesta=int(input())
+
+        except ValueError:
+            print("\nOpción no válida. Vuelve a intentarlo\n")
+            continue
+    
+        if respuesta == 1:
+            print("\n---Catálogo de libros UCNL: ---")
+            for libro in catalogo_de_libros:
+                libro.verInformacion()
+            print("\n¿Deseas hacer algo más?")
+
+        elif respuesta == 2:
+            print("\n---¿Qué libro quieres tomar prestado?---")
+            nombre_prestamo = input("Introduce su título: ")
+            encontrado = False
+            for libro in catalogo_de_libros:
+                if libro.nombre.lower() == nombre_prestamo.lower():
+                    libro.prestarLibro()
+                    encontrado = True   
+            
+            if not encontrado:
+                print("Lo siento, el libro no esta disponible")
+
+            print("\n¿Deseas hacer algo más?")
+
+        elif respuesta == 3:
+            print("¿Quieres devolver un préstamo?")
+            nombre_devolucion = input("Introduce su título: ")
+            encontrado = False
+            for libro in catalogo_de_libros:
+                if libro.nombre.lower() == nombre_devolucion:
+                    libro.devolverLibro()
+                    encontrado = True
+            if not encontrado:
+                print("Lo siento, el libro no esta disponible")
+
+            print("\n¿Deseas hacer algo más?")
+
+        elif respuesta == 4:
+            print("\nPor favor, introduce la información del libro")
+            nombre_libro_nuevo = input("Título del libro: ")
+            autor_libro_nuevo = input("Nombre del autor: ")
+            ISBN_libro_nuevo = input("ISBN: ")
+            fechapublicacion_libro_nuevo = input("Fecha de publicación: ")
+            catalogo_de_libros.append(Libro(nombre_libro_nuevo, autor_libro_nuevo, ISBN_libro_nuevo,
+                                            fechapublicacion_libro_nuevo))
+
+            print(f"\n¡Gracias por donar {nombre_libro_nuevo}, se ha añadido al catálogo!")
+            print("\n¿Deseas hacer algo más?")
+
+    elif iniciar == 2:
+        break
+    else:
+        print("\nOpción no válida. Vuelve a intentarlo\n")
+
+    
+
+print ("\nGracias por tu visita a la biblioteca")
